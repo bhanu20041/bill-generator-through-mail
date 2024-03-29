@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details Form</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff; /* White container background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        h2 {
+            color: #007bff; /* Blue heading text */
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 5px;
+            border-color: #ced4da; /* Light gray border */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Blue button background */
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .item {
+            margin-bottom: 20px;
+        }
+        .btn-add {
+            background-color: #28a745; /* Green button background */
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .btn-add:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Customer Details Form</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="billdash.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="billcalculated.html">View Bills</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Submit Customer Bill Details Form</h2>
+
+        <form id="customerForm" style="width: 400px;">
+            <div class="form-group">
+                <label for="customerId">Customer ID:</label>
+                <input type="text" class="form-control" id="customerId" name="customerId" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customerName">Customer Name:</label>
+                <input type="text" class="form-control" id="customerName" name="customerName" required>
+            </div>
+
+            <div id="itemsContainer">
+                <!-- Initial item input fields -->
+                <div class="item">
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" name="itemName" class="itemName form-control" required>
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" class="quantity form-control" required>
+                    <label for="price">Price:</label>
+                    <input type="number" name="price" class="price form-control" required><br><br>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-primary btn-add" onclick="addItem()">Add Item</button>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS and Popper.js links (required for Bootstrap functionality) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function addItem() {
+            const itemsContainer = document.getElementById("itemsContainer");
+            const newItem = document.createElement("div");
+            newItem.classList.add("item");
+            newItem.innerHTML = `
+                <label for="itemName">Item Name:</label>
+                <input type="text" name="itemName" class="itemName form-control" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" class="quantity form-control" required>
+                <label for="price">Price:</label>
+                <input type="number" name="price" class="price form-control" required><br><br>
+            `;
+            itemsContainer.appendChild(newItem);
+        }
+
+        function submitForm() {
+            const customerId = document.getElementById("customerId").value;
+            const customerName = document.getElementById("customerName").value;
+            const items = [];
+
+            const itemElements = document.getElementsByClassName("item");
+            for (let i = 0; i < itemElements.length; i++) {
+                const itemName = itemElements[i].querySelector(".itemName").value;
+                const quantity = parseInt(itemElements[i].querySelector(".quantity").value);
+                const price = parseFloat(itemElements[i].querySelector(".price").value);
+                items.push({ itemName, quantity, price });
+            }
+
+            const payload = {
+                customerId,
+                customerName,
+                items // Include the "items" field in the payload
+            };
+
+            fetch('https://6xqdkqje06.execute-api.us-east-1.amazonaws.com/test', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Customer data added successfully'); // Display success alert
+                } else {
+                    throw new Error('Failed to add customer data'); // Throw error if response is not ok
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error); // Log error to console
+                alert('Error occurred. Please try again.');
+            });
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".container").style.opacity = 1;
+            document.querySelector(".container").style.transform = "translateY(0)";
+        });
+    </script>
+</body>
+</html>

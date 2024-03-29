@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e6e6e6; /* Light gray background */
+        }
+        .navbar {
+            background-color: #333; /* Dark background for navbar */
+            padding: 10px 0;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            color: #fff; /* White text color for brand */
+            margin-left: 20px;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff; /* White container background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0; /* Initially hidden */
+            animation: fadeIn 1s ease forwards; /* Fade in animation */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333; /* Dark gray heading text */
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+            opacity: 0; /* Initially hidden */
+            animation: slideIn 1s ease forwards 0.5s; /* Slide in animation with delay */
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .button {
+            padding: 12px 24px;
+            margin: 0 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4caf50; /* Green button background */
+            color: #ffffff; /* White button text */
+            transition: background-color 0.3s ease-in-out;
+            outline: none;
+        }
+        .button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .button:active {
+            transform: translateY(2px);
+        }
+        .button:focus {
+            box-shadow: 0 0 0 2px #4caf50; /* Green focus outline */
+        }
+        .bill-image {
+            width: 300px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Bill Calculator</a>
+    </nav>
+    
+    <div class="container">
+        <h1>Bill Calculator</h1>
+
+        <p>Calculate your bill with ease!</p>
+
+        <div class="button-container">
+            <button class="button" onclick="window.location.href='bill.html'">Submit Bill</button>
+            <button class="button" onclick="window.location.href='billcalculated.html'">View Bills</button>
+        </div>
+    </div>
+</body>
+</html>
